@@ -7,9 +7,10 @@
     <link type="text/css" rel="stylesheet" href="interface.css"/>
     <script type="text/javascript" src="main.js"></script>
 </head>
-<body>
-        <div style="border:2px solid black;width:50%;margin-bottom:10px;"><div style="width:40%;background-color:green;padding-bottom:20px;"></div></div>
-        <table border="1" style="border-collapse:collapse;width:50%;empty-cells:hide;" cellpadding="30">
+<body onload="draw()">
+    <div style="margin-bottom:10px;width:100%"><span style="padding:5px;margin-bottom:5px;" id="lvl">LvL 1</span><div style="border:2px solid black;width:20%;"><div style="width:40%;background-color:green;padding-bottom:20px;" id="bar"></div></div></div>
+        <div style="display:inline-block;width:20%; border:1px solid black;">
+    <table border="1" style="border-collapse:collapse;border-color:black;width:100%;user-select:none;font-size:30px; text-align:center;" cellpadding="30" id="main">
             <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
@@ -17,6 +18,19 @@
             <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         </table>
-    <div style="position:absolute;">Upgrade 1</div>
+        </div>
+    <div style="display:inline-block; background-color:lightslategrey; width:10%; vertical-align:top">
+        <div style="margin:5px;border:1px dashed black;padding:5px;">
+            Gold:0
+        <br>
+            +0/sec
+        </div>
+        <div style="margin:5px;border:1px dashed black">Upgrades</div>
+        <div style="margin:5px;border:1px dashed black">Prestige</div>
+    </div>
+    <br />
+    <button style="margin:5px;border:1px outset black;background-color:aqua;" id="click">
+        Click Me (0/10)    
+    </button>
 </body>
 </html>
