@@ -5,7 +5,7 @@ const player = {
     money: 0,
     xp: { cur: 0, next: 34 },
     lvl: 1,
-    clicks: { cur: 0, next: 10 },
+    clicks: { cur: 0, next: 10, time:Date.now()},
     charge: false,
 }
 
@@ -18,36 +18,66 @@ function draw() {
             let textbox = cell.childNodes[0];
             cell.style.visibility = "hidden";
             if (checkIndex(player.grid, i) || checkIndex(player.grid[i], j)) continue;
+            let check = player.grid[i][j];
             cell.style.visibility = "visible";
             cell.textAlign = "center";
             cell.style.backgroundColor = "white";
             cell.ondragover = function (event) {
                 event.preventDefault();
             };
+            cell.ondragenter = function (event) {
+                cell.style.backgroundColor = "lightgreen";
+                if (drag.row === i && drag.col === j || check === 0) return;
+                if(drag.val !== check) {
+                    cell.style.backgroundColor = "lightcoral";
+                    return;
+                }
+                    var num = check + drag.val;
+                    if (num < 128) textbox.innerHTML = num;
+                    else textbox.innerHTML = 2 + "<sup style='font-size:0.5em'>" + Math.log2(num) + "</sup>";
+                    textbox.style.color = "lightgrey";
+            };
+            cell.ondragleave = function (event) {
+                cell.style.backgroundColor = "white";
+                textbox.style.fontSize = "5vw";
+                textbox.style.color = "black";
+                if (check === 0) {
+                    textbox.innerHTML = "";
+                    if (player.charge) cell.style.backgroundColor = "darkred";
+                } else {
+                    textbox.draggable = "true";
+                    if (check < 128) textbox.innerHTML = check;
+                    else textbox.innerHTML = 2 + "<sup style='font-size:0.5em'>" + Math.log2(check) + "</sup>"
+                }
+            };
             cell.ondrop = function (event) {
                 event.preventDefault();
+                draw();
                 if (drag.row === i && drag.col === j) return;
-                if (player.grid[i][j] === 0) {
+                if (check === 0) {
                     player.grid[i][j] = drag.val;
                     player.grid[drag.row][drag.col] = 0;
-                } else if (player.grid[i][j] === drag.val) {
+                } else if (check === drag.val) {
                     player.grid[i][j] += drag.val;
                     if(!player.charge)player.xp.cur += drag.val;
                     player.grid[drag.row][drag.col] = 0;
                 }
+                textbox.style.color = "black";
                 draw();
             };
-            let check = player.grid[i][j];
             textbox.style.fontSize = "5vw";
+            textbox.style.color = "black";
             if (check === 0) {
                 textbox.innerHTML = "";
                 if (player.charge) cell.style.backgroundColor = "darkred";
             } else {
                 textbox.draggable = "true";
-                textbox.innerHTML = "<div class='content'>" + check + "</div>"
+                if (check < 128) textbox.innerHTML = check;
+                else textbox.innerHTML = 2+"<sup style='font-size:0.5em'>"+Math.log2(check)+"</sup>"
                 textbox.ondragstart = function (event) {
                     window.drag = { val: check, row: i, col: j }
                     event.dataTransfer.setData("Text", event.target.id);
+                    event.dataTransfer.effectAllowed = "move";
                 }
             }
         }
@@ -64,17 +94,18 @@ function draw() {
     if (player.charge) {
         button.style.backgroundColor = "darkslateblue";
         button.innerHTML = "No Power";
-        count.innerHTML = "Acquire a " + Math.pow(2, player.tiles);
+        count.innerHTML = "Drag a " + Math.pow(2, player.tiles) + " over the button";
         button.onclick = "";
         button.ondragover = function (event) {
             event.preventDefault();
         };
         button.ondrop = function (event) {
             event.preventDefault();
-            if (drag.val === 2 ^ player.tiles) {
+            if (drag.val === Math.pow(2,  player.tiles)) {
                 player.charge = false;
                 player.grid[drag.row][drag.col] = 0;
             }
+            if (player.lvl === 3) startAutoGen();
             draw();
         };
     } else {
@@ -85,13 +116,19 @@ function draw() {
                 Spawn(2);
                 if (player.xp.cur === player.xp.next) LvlUp();
             }
+            player.clicks.time = Date.now();
             draw();
         }
         button.ondrop = "";
         button.ondragover = "";
         button.innerHTML = "Generate";
         button.style.backgroundColor = "aqua";
-        count.innerHTML = player.clicks.cur + "/" + player.clicks.next;
+        let ret = player.clicks.cur + "/" + player.clicks.next;
+        if (player.lvl >= 3) {
+            if(player.clicks.time < Date.now() - 10000)ret = ret + "<br>AutoGen: 1/sec";
+            else ret = ret + "<br>AutoGen: off";
+        }
+        count.innerHTML = ret;
     }
 }
 
@@ -116,6 +153,22 @@ function LvlUp() {
     newTile();
     Spawn(2);
     draw();
+}
+
+function startAutoGen() {
+    function generate() {
+        if (player.clicks.time < Date.now() - 10000) {
+            player.clicks.cur++;
+            if (player.clicks.cur === player.clicks.next) {
+                player.clicks.cur = 0;
+                Spawn(2);
+                if (player.xp.cur === player.xp.next) LvlUp();
+            }
+            draw();
+        }
+        setTimeout(generate, 1000);
+    }
+    setTimeout(generate,1000)
 }
 
 function newTile() {
