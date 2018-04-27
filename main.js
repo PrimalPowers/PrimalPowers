@@ -111,7 +111,7 @@ function Spawn(num) {
 function LvlUp() {
     player.charge = true;
     player.xp.cur = 0;
-    player.xp.next = player.xp.next + 2 ^ (player.tiles) * (player.tiles);
+    player.xp.next = player.xp.next + Math.pow(2, player.tiles) * player.tiles;
     player.lvl++;
     newTile();
     Spawn(2);
