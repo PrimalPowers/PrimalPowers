@@ -8,15 +8,16 @@
     <script type="text/javascript" src="main.js"></script>
 </head>
 <body onload="draw()">
-    <div style="margin-bottom:10px;width:100%"><span style="padding:5px;margin-bottom:5px;" id="lvl">LvL 1</span><div style="border:2px solid black;width:20%;"><div style="width:40%;background-color:green;padding-bottom:20px;" id="bar"></div></div></div>
-        <div style="display:inline-block;width:20%; border:1px solid black;">
-    <table border="1" style="border-collapse:collapse;border-color:black;width:100%;user-select:none;font-size:30px; text-align:center;" cellpadding="30" id="main">
-            <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <div class="drag"></div>
+    <div style="margin-bottom:10px;width:50%;margin-left:25%"><span style="padding:5px;margin-bottom:5px;" id="lvl">LvL 1</span><div style="border:2px solid black;width:80%;margin-left:10%"><div style="width:40%;background-color:green;padding-bottom:20px;" id="bar"></div></div></div>
+        <div style="display:inline-block;width:30%; border:1px solid black;" id="playarea">
+    <table border="1" style="border-collapse:collapse;border-color:black;width:100%;user-select:none;font-size:50px; text-align:center;table-layout:fixed" id="main">
+            <tr><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td></tr>
+            <tr><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td></tr>
+            <tr><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td></tr>
+            <tr><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td></tr>
+            <tr><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td></tr>
+            <tr><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td><td><div class="content"></div></td></tr>
         </table>
         </div>
     <div style="display:inline-block; background-color:lightslategrey; width:10%; vertical-align:top">
@@ -29,8 +30,12 @@
         <div style="margin:5px;border:1px dashed black">Prestige</div>
     </div>
     <br />
-    <button style="margin:5px;border:1px outset black;background-color:aqua;" id="click">
-        Click Me (0/10)    
-    </button>
+    <div>
+        <button style="margin:5px;border:1px outset black;background-color:aqua;width:10%; font-size:2vw" id="click">
+            Generate
+        </button>
+        <br />
+        <span id="clickcnt" style="font-size:1vw">0/10</span>
+    </div>
 </body>
 </html>
